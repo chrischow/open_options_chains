@@ -17,7 +17,7 @@ This repository contains the code to implement my Airflow/PostgreSQL solution fo
 If you have Git installed, clone the repository to your local machine.
 
 ```bash
-git clone XX
+git clone https://github.com/chrischow/open_options_chains.git
 ```
 
 Otherwise, you may download the code and unzip the contents in a folder of your choice. Then, `cd` into that directory. You'll see:
@@ -29,7 +29,7 @@ Otherwise, you may download the code and unzip the contents in a folder of your 
 - `scripts`: Contains a script to initialise Airflow
 - `docker-compose.yml`: File that defines the services, networks, and volumes for our app
 
-Not included is a file defining environment variables (`.env`). The contents should be as shown below. When changing the `POSTGRES_*` variables, you must change the associated variables in `AIRFLOW__CORE__SQL_ALCHEMY_CONN`. Do remember to input your TD Ameritrade (TDA) API key.
+Then, change the required variables in the `.env` file. Note that when you edit the `POSTGRES_*` variables, you must change the associated variables in `AIRFLOW__CORE__SQL_ALCHEMY_CONN`. Do remember to input your TD Ameritrade (TDA) API key.
 
 ```yaml
 # Postgres
