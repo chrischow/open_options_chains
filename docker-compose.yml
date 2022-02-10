@@ -1,0 +1,53 @@
+version: '3.8'
+services:
+    postgres:
+        image: postgres
+        env_file:
+            - .env
+        volumes:
+            - ./pgdata:/var/lib/postgresql/data
+            - ./db:/docker-entrypoint-initdb.d/
+        ports:
+            - "5432:5432"
+    airflow-init:
+        image: apache/airflow
+        entrypoint: ./scripts/init-entrypoint.sh
+        env_file:
+            - .env
+        restart:
+            on-failure:10
+        depends_on:
+            - postgres
+        profiles:
+            - init
+        volumes:
+            - ./scripts:/opt/airflow/scripts
+    scheduler:
+        image: apache/airflow
+        entrypoint: ./scripts/scheduler-entrypoint.sh
+        restart:
+            on-failure:10
+        depends_on:
+            - postgres
+        env_file:
+            - .env
+        volumes:
+            - ./scripts:/opt/airflow/scripts
+            - ./dags:/opt/airflow/dags
+            - ./logs:/opt/airflow/logs
+    webserver:
+        image: apache/airflow
+        entrypoint: ./scripts/webserver-entrypoint.sh
+        restart:
+            on-failure:10
+        depends_on:
+            - postgres
+            - scheduler
+        env_file:
+            - .env
+        volumes:
+            - ./scripts:/opt/airflow/scripts
+            - ./dags:/opt/airflow/dags
+            - ./logs:/opt/airflow/logs
+        ports:
+            - "8088:8080"
